@@ -1,0 +1,92 @@
+# ==============================================================================
+# Remote Elephant Fence Telemetry Data Simulator Configuration
+# ==============================================================================
+
+server:
+  base_url: "http://localhost:8080"
+  ingest_endpoint: "/api/v1/telemetry/ingest"
+  timeout_seconds: 5
+  retry_attempts: 3
+  retry_delay_seconds: 1.0
+
+simulation:
+  # Interval between telemetry push cycles in seconds
+  # Default: 10s for interactive/dashboard testing (set to 900 for real 15-min cycle)
+  interval_seconds: 10
+  # Mode: 'continuous' or 'manual'
+  mode: "continuous"
+  # Add slight random noise to simulate natural solar/weather jitter
+  enable_jitter: true
+  # Simulate diurnal solar cycle based on local clock time
+  simulate_solar_battery: true
+
+# Voltage generation bands (in kiloVolts, kV)
+voltage_profiles:
+  normal:
+    nominal_kv: 6.8
+    min_kv: 5.5
+    max_kv: 8.5
+    noise_std: 0.15
+  vegetation_warning:
+    nominal_kv: 4.0
+    min_kv: 3.0
+    max_kv: 4.8
+    noise_std: 0.25
+  critical_breach:
+    nominal_kv: 0.2
+    min_kv: 0.0
+    max_kv: 1.5
+    noise_std: 0.10
+
+# Simulated Gateways & Fence Deployments across Sri Lanka
+gateways:
+  - id: "GW-ANURADHAPURA-01"
+    name: "Anuradhapura North Hub"
+    location: "Wilpattu Border Zone"
+    fences:
+      - code: "FC-WILPATPU-01"
+        name: "Wilpattu Border Protection Fence"
+        devices:
+          - serial: "SN-12345"
+            section_code: "SEC-01"
+            section_name: "Main Energizer Section"
+            nominal_voltage: 7.2
+            initial_state: "normal"
+          - serial: "SN-E-01001"
+            section_code: "SEC-02"
+            section_name: "River Bank Sector"
+            nominal_voltage: 6.8
+            initial_state: "normal"
+          - serial: "SN-E-01002"
+            section_code: "SEC-03"
+            section_name: "Forest Edge Sector"
+            nominal_voltage: 6.6
+            initial_state: "normal"
+          - serial: "SN-E-01003"
+            section_code: "SEC-04"
+            section_name: "Village Boundary Sector"
+            nominal_voltage: 6.4
+            initial_state: "normal"
+
+  - id: "GW-POLONNARUWA-02"
+    name: "Polonnaruwa South Hub"
+    location: "Minneriya National Park"
+    fences:
+      - code: "FC-MINNERIYA-01"
+        name: "Minneriya Elephant Corridor Fence"
+        devices:
+          - serial: "SN-E-02001"
+            section_code: "SEC-01"
+            section_name: "Corridor North Sector"
+            nominal_voltage: 7.0
+            initial_state: "normal"
+          - serial: "SN-E-02002"
+            section_code: "SEC-02"
+            section_name: "Corridor Central Sector"
+            nominal_voltage: 6.7
+            initial_state: "normal"
+          - serial: "SN-E-02003"
+            section_code: "SEC-03"
+            section_name: "Tank Road Crossing Sector"
+            nominal_voltage: 6.5
+            initial_state: "normal"
