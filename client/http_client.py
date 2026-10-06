@@ -35,8 +35,9 @@ class BatchIngestResult:
 
 
 class TelemetryHttpClient:
-    def __init__(self, config: ServerConfig):
+    def __init__(self, config: ServerConfig, verbose: bool = False):
         self.config = config
+        self.verbose = verbose
         self.session = requests.Session()
         self.session.headers.update({
             "Content-Type": "application/json",

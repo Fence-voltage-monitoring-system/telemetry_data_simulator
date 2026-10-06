@@ -453,7 +453,10 @@ def main():
         "--url",
         type=str,
         default=None,
-        help="Override backend base URL (e.g. http://localhost:8080)",
+    parser.add_argument(
+        "--verbose", "-v",
+        action="store_true",
+        help="Print raw JSON request & response payloads for every transmission",
     )
 
     args = parser.parse_args()
