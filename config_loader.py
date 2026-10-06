@@ -30,7 +30,8 @@ class ServerConfig:
 
 @dataclass
 class SimulationConfig:
-    interval_seconds: int = 10
+    interval_seconds: int = 60
+    stagger_gateways: bool = True
     mode: str = "continuous"
     enable_jitter: bool = True
     simulate_solar_battery: bool = True
@@ -118,7 +119,8 @@ def load_config(config_path: Optional[Path] = None) -> AppConfig:
     # Simulation config
     sim_data = data.get("simulation", {})
     simulation = SimulationConfig(
-        interval_seconds=sim_data.get("interval_seconds", 10),
+        interval_seconds=sim_data.get("interval_seconds", 60),
+        stagger_gateways=sim_data.get("stagger_gateways", True),
         mode=sim_data.get("mode", "continuous"),
         enable_jitter=sim_data.get("enable_jitter", True),
         simulate_solar_battery=sim_data.get("simulate_solar_battery", True),

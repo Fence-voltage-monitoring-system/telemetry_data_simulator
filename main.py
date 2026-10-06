@@ -182,16 +182,72 @@ def start_interactive_listener(generator: TelemetryGenerator, stop_event: thread
 
 
 # ==============================================================================
-# Execution Modes
+# Asynchronous Gateway Worker & Dispatch Display
 # ==============================================================================
+print_lock = threading.Lock()
+
+
+def print_gateway_dispatch(
+    generator: TelemetryGenerator,
+    gw_config,
+    results: List[IngestResult],
+    cycle_num: int,
+    interval_sec: float,
+):
+    with print_lock:
+        timestamp = datetime.now().strftime('%H:%M:%S')
+        print(f"\n{Color.MAGENTA}{Color.BOLD}----------------------------------------------------------------------------------------------------{Color.RESET}")
+        print(f"📡 {Color.BOLD}[{timestamp}] GATEWAY DISPATCH: {Color.CYAN}{gw_config.id}{Color.RESET} ({gw_config.name} | {gw_config.location}) - Cycle #{cycle_num}")
+        print(f"{Color.MAGENTA}{Color.BOLD}----------------------------------------------------------------------------------------------------{Color.RESET}")
+        print(f"  {'DEVICE':<12} {'FENCE':<16} {'SECTION':<20} {'STATUS':<12} {'VOLTAGE':<10} {'BATTERY':<10} {'SIGNAL':<8} {'INGEST RESULT'}")
+        print("  " + "-" * 98)
+
+        result_map = {r.device_serial: r for r in results}
+
+        for fence in gw_config.fences:
+            for dev_cfg in fence.devices:
+                dev = generator.devices.get(dev_cfg.serial)
+                if not dev:
+                    continue
+                state_badge = format_state_badge(dev.current_state)
+                r = result_map.get(dev.serial)
+
+                if dev.last_reading:
+                    v_str = f"{dev.last_reading.voltage:0.2f} kV"
+                    b_str = f"{dev.last_reading.battery}%"
+                    s_str = f"{dev.last_reading.signal}%"
+                else:
+                    v_str = "---"
+                    b_str = "---"
+                    s_str = "---"
+
+                if r is None:
+                    res_str = f"{Color.DIM}Offline (Skipped){Color.RESET}"
+                elif r.success:
+                    res_str = f"{Color.GREEN}✓ 201 Created ({r.latency_ms}ms){Color.RESET}"
+                elif r.status_code == 404:
+                    res_str = f"{Color.YELLOW}⚠ 404 (Unseeded Serial){Color.RESET}"
+                else:
+                    res_str = f"{Color.RED}✗ {r.error_message or 'Error'}{Color.RESET}"
+
+                print(
+                    f"  {dev.serial:<12} {dev.fence_code:<16} {dev.section_code + ' (' + dev.section_name[:10] + '.)':<20} "
+                    f"{state_badge:<21} {v_str:<10} {b_str:<10} {s_str:<8} {res_str}"
+                )
+
+
 def run_continuous_simulation(config: AppConfig, interval: float):
     generator = TelemetryGenerator(config)
     client = TelemetryHttpClient(config.server)
 
+    num_gateways = len(config.gateways)
+    stagger_offset = (interval / num_gateways) if (config.simulation.stagger_gateways and num_gateways > 0) else 0.0
+
     print_banner()
     print(f"Connecting to Backend Endpoint: {Color.BOLD}{config.server.ingest_url}{Color.RESET}")
-    print(f"Simulating {len(config.gateways)} Gateways and {len(generator.devices)} Devices across Sri Lanka.")
-    print(f"Transmission interval: {interval}s")
+    print(f"Active Gateways ({num_gateways}): {[gw.id for gw in config.gateways]}")
+    print(f"Total Monitored Sections across Sri Lanka: {len(generator.devices)}")
+    print(f"Each Gateway Transmission Cycle: {Color.BOLD}{interval}s{Color.RESET} (Staggered every {stagger_offset:0.1f}s)")
 
     # Backend Health Probe
     is_online = client.is_backend_online()
@@ -205,25 +261,52 @@ def run_continuous_simulation(config: AppConfig, interval: float):
     stop_event = threading.Event()
     start_interactive_listener(generator, stop_event)
 
-    cycle = 1
+    gateway_threads = []
+
+    def make_gateway_worker(gw, gw_idx, initial_delay):
+        def worker():
+            # Initial phase delay to stagger transmissions across the 60-second window
+            if initial_delay > 0:
+                for _ in range(int(initial_delay * 10)):
+                    if stop_event.is_set():
+                        return
+                    time.sleep(0.1)
+
+            cycle_num = 1
+            while not stop_event.is_set():
+                # 1. Generate readings for this specific gateway's connected devices
+                readings = generator.generate_readings_for_gateway(gw.id)
+
+                # 2. Dispatch batch to backend
+                batch_result = client.send_batch(readings)
+
+                # 3. Print the gateway's live transmission card
+                print_gateway_dispatch(generator, gw, batch_result.results, cycle_num, interval)
+
+                cycle_num += 1
+
+                # 4. Sleep for the gateway's full 60-second cycle
+                for _ in range(int(interval * 10)):
+                    if stop_event.is_set():
+                        return
+                    time.sleep(0.1)
+
+        return worker
+
+    # Launch an independent thread for each Gateway
+    for idx, gw in enumerate(config.gateways):
+        init_delay = idx * stagger_offset
+        t = threading.Thread(
+            target=make_gateway_worker(gw, idx, init_delay),
+            name=f"Worker-{gw.id}",
+            daemon=True,
+        )
+        gateway_threads.append(t)
+        t.start()
+
     try:
         while not stop_event.is_set():
-            # 1. Generate current cycle readings
-            readings = generator.generate_all_readings()
-
-            # 2. Dispatch to backend
-            batch_result = client.send_batch(readings)
-
-            # 3. Print clean formatted ANSI table
-            print_status_table(generator, batch_result.results, cycle, interval)
-
-            cycle += 1
-            # Sleep in short increments to allow instant stop response
-            for _ in range(int(interval * 10)):
-                if stop_event.is_set():
-                    break
-                time.sleep(0.1)
-
+            time.sleep(0.5)
     except KeyboardInterrupt:
         print(f"\n{Color.YELLOW}Simulation halted by user (Ctrl+C). Exiting.{Color.RESET}")
         stop_event.set()

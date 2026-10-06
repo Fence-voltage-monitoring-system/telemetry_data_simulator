@@ -10,9 +10,10 @@ server:
   retry_delay_seconds: 1.0
 
 simulation:
-  # Interval between telemetry push cycles in seconds
-  # Default: 10s for interactive/dashboard testing (set to 900 for real 15-min cycle)
-  interval_seconds: 10
+  # Cycle duration for each gateway in seconds (default: 60s)
+  interval_seconds: 60
+  # Stagger gateway start times across the cycle so gateways don't all transmit at the exact same millisecond
+  stagger_gateways: true
   # Mode: 'continuous' or 'manual'
   mode: "continuous"
   # Add slight random noise to simulate natural solar/weather jitter
@@ -38,7 +39,7 @@ voltage_profiles:
     max_kv: 1.5
     noise_std: 0.10
 
-# Simulated Gateways & Fence Deployments across Sri Lanka
+# 5 Simulated Regional Gateways across Sri Lanka
 gateways:
   - id: "GW-ANURADHAPURA-01"
     name: "Anuradhapura North Hub"
@@ -89,4 +90,73 @@ gateways:
             section_code: "SEC-03"
             section_name: "Tank Road Crossing Sector"
             nominal_voltage: 6.5
+            initial_state: "normal"
+
+  - id: "GW-HAMBANTOTA-03"
+    name: "Hambantota Southern Hub"
+    location: "Bundala & Lunugamvehera"
+    fences:
+      - code: "FC-BUNDALA-01"
+        name: "Bundala Wildlife Reserve Fence"
+        devices:
+          - serial: "SN-E-03001"
+            section_code: "SEC-01"
+            section_name: "Lagoon Border Sector"
+            nominal_voltage: 7.1
+            initial_state: "normal"
+          - serial: "SN-E-03002"
+            section_code: "SEC-02"
+            section_name: "Salt Pan Perimeter Sector"
+            nominal_voltage: 6.8
+            initial_state: "normal"
+          - serial: "SN-E-03003"
+            section_code: "SEC-03"
+            section_name: "Southern Highway Crossing"
+            nominal_voltage: 6.6
+            initial_state: "normal"
+
+  - id: "GW-AMPARA-04"
+    name: "Ampara Eastern Hub"
+    location: "Gal Oya National Park"
+    fences:
+      - code: "FC-GALOYA-01"
+        name: "Gal Oya Valley Protection Fence"
+        devices:
+          - serial: "SN-E-04001"
+            section_code: "SEC-01"
+            section_name: "Senanayake Samudraya North"
+            nominal_voltage: 6.9
+            initial_state: "normal"
+          - serial: "SN-E-04002"
+            section_code: "SEC-02"
+            section_name: "Inginiyagala Forest Boundary"
+            nominal_voltage: 6.7
+            initial_state: "normal"
+          - serial: "SN-E-04003"
+            section_code: "SEC-03"
+            section_name: "Paddy Field Protection Line"
+            nominal_voltage: 6.5
+            initial_state: "normal"
+
+  - id: "GW-TRINCOMALEE-05"
+    name: "Trincomalee North-East Hub"
+    location: "Somawathiya Sanctuary"
+    fences:
+      - code: "FC-SOMAWATH-01"
+        name: "Somawathiya Border Corridor Fence"
+        devices:
+          - serial: "SN-E-05001"
+            section_code: "SEC-01"
+            section_name: "Mahaweli Flood Plain Sector"
+            nominal_voltage: 7.3
+            initial_state: "normal"
+          - serial: "SN-E-05002"
+            section_code: "SEC-02"
+            section_name: "Sanctuary East Border Sector"
+            nominal_voltage: 6.8
+            initial_state: "normal"
+          - serial: "SN-E-05003"
+            section_code: "SEC-03"
+            section_name: "Kanthale Road Sector"
+            nominal_voltage: 6.4
             initial_state: "normal"

@@ -117,6 +117,20 @@ class TelemetryGenerator:
         dev.last_reading = reading
         return reading
 
+    def generate_readings_for_gateway(
+        self,
+        gateway_id: str,
+        target_time: Optional[datetime] = None,
+    ) -> List[TelemetryReadingPayload]:
+        """Generates telemetry readings for all devices connected to a specific gateway."""
+        readings = []
+        for dev in self.devices.values():
+            if dev.gateway_id.upper() == gateway_id.upper():
+                r = self.generate_reading_for_device(dev, target_time)
+                if r is not None:
+                    readings.append(r)
+        return readings
+
     def generate_all_readings(
         self,
         target_time: Optional[datetime] = None,
