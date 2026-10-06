@@ -72,38 +72,48 @@ def print_status_table(
     cycle_num: int,
     interval_sec: float,
 ):
-    print(f"\n{Color.BOLD}--- Telemetry Cycle #{cycle_num} [{datetime.now().strftime('%H:%M:%S')}] (Interval: {interval_sec}s) ---{Color.RESET}")
-    print(f"{'DEVICE':<12} {'FENCE':<16} {'SECTION':<18} {'STATUS':<12} {'VOLTAGE':<10} {'BATTERY':<10} {'SIGNAL':<8} {'API RESULT'}")
-    print("-" * 100)
+    print(f"\n{Color.BOLD}===================================================================================================={Color.RESET}")
+    print(f"{Color.BOLD} 📡 TELEMETRY CYCLE #{cycle_num} [{datetime.now().strftime('%H:%M:%S')}] | TRANSMISSION INTERVAL: {interval_sec}s{Color.RESET}")
+    print(f"{Color.BOLD}===================================================================================================={Color.RESET}")
 
     result_map = {r.device_serial: r for r in results}
 
-    for serial, dev in generator.devices.items():
-        state_badge = format_state_badge(dev.current_state)
-        r = result_map.get(serial)
+    # Group devices by Gateway
+    for gw in generator.config.gateways:
+        print(f"\n{Color.CYAN}{Color.BOLD}► GATEWAY: {gw.id} ({gw.name} - {gw.location}){Color.RESET}")
+        print(f"  {'DEVICE':<12} {'FENCE':<16} {'SECTION':<20} {'STATUS':<12} {'VOLTAGE':<10} {'BATTERY':<10} {'SIGNAL':<8} {'INGEST RESULT'}")
+        print("  " + "-" * 98)
 
-        if dev.last_reading:
-            v_str = f"{dev.last_reading.voltage:0.2f} kV"
-            b_str = f"{dev.last_reading.battery}%"
-            s_str = f"{dev.last_reading.signal}%"
-        else:
-            v_str = "---"
-            b_str = "---"
-            s_str = "---"
+        for fence in gw.fences:
+            for dev_cfg in fence.devices:
+                dev = generator.devices.get(dev_cfg.serial)
+                if not dev:
+                    continue
+                state_badge = format_state_badge(dev.current_state)
+                r = result_map.get(dev.serial)
 
-        if r is None:
-            res_str = f"{Color.DIM}Offline (Skipped){Color.RESET}"
-        elif r.success:
-            res_str = f"{Color.GREEN}✓ 201 Created ({r.latency_ms}ms){Color.RESET}"
-        elif r.status_code == 404:
-            res_str = f"{Color.YELLOW}⚠ 404 (Unseeded Serial){Color.RESET}"
-        else:
-            res_str = f"{Color.RED}✗ {r.error_message or 'Error'}{Color.RESET}"
+                if dev.last_reading:
+                    v_str = f"{dev.last_reading.voltage:0.2f} kV"
+                    b_str = f"{dev.last_reading.battery}%"
+                    s_str = f"{dev.last_reading.signal}%"
+                else:
+                    v_str = "---"
+                    b_str = "---"
+                    s_str = "---"
 
-        print(
-            f"{dev.serial:<12} {dev.fence_code:<16} {dev.section_code + ' (' + dev.section_name[:8] + '.)':<18} "
-            f"{state_badge:<21} {v_str:<10} {b_str:<10} {s_str:<8} {res_str}"
-        )
+                if r is None:
+                    res_str = f"{Color.DIM}Offline (Skipped){Color.RESET}"
+                elif r.success:
+                    res_str = f"{Color.GREEN}✓ 201 Created ({r.latency_ms}ms){Color.RESET}"
+                elif r.status_code == 404:
+                    res_str = f"{Color.YELLOW}⚠ 404 (Unseeded Serial){Color.RESET}"
+                else:
+                    res_str = f"{Color.RED}✗ {r.error_message or 'Error'}{Color.RESET}"
+
+                print(
+                    f"  {dev.serial:<12} {dev.fence_code:<16} {dev.section_code + ' (' + dev.section_name[:10] + '.)':<20} "
+                    f"{state_badge:<21} {v_str:<10} {b_str:<10} {s_str:<8} {res_str}"
+                )
 
 
 def print_interactive_help():
@@ -286,14 +296,24 @@ def run_preview(config: AppConfig):
     """Generates and prints sample JSON payloads directly to stdout for inspection."""
     generator = TelemetryGenerator(config)
     print_banner()
-    print(f"{Color.BOLD}Telemetry Payload JSON Preview (Sample Ingestion Batch):{Color.RESET}\n")
+    print(f"{Color.BOLD}Telemetry Payload JSON Preview (Grouped by Gateway):{Color.RESET}\n")
 
-    readings = generator.generate_all_readings()
-    for idx, r in enumerate(readings, 1):
-        dev = generator.devices[r.deviceSerial]
-        print(f"{Color.CYAN}--- Reading #{idx}: {dev.fence_name} | {dev.section_name} ({r.deviceSerial}) ---{Color.RESET}")
-        print(json.dumps(r.to_full_dict(), indent=2))
-        print()
+    for gw in config.gateways:
+        print(f"{Color.BOLD}{Color.MAGENTA}======================================================================{Color.RESET}")
+        print(f"{Color.BOLD}{Color.MAGENTA}📡 GATEWAY: {gw.id} | {gw.name} ({gw.location}){Color.RESET}")
+        print(f"{Color.BOLD}{Color.MAGENTA}======================================================================{Color.RESET}")
+
+        for fence in gw.fences:
+            print(f"\n  {Color.CYAN}🏞️  FENCE: {fence.code} - {fence.name}{Color.RESET}")
+            for dev_cfg in fence.devices:
+                dev = generator.devices.get(dev_cfg.serial)
+                if not dev:
+                    continue
+                r = generator.generate_reading_for_device(dev)
+                if r:
+                    print(f"    {Color.BOLD}🔌 Section: {dev.section_code} ({dev.section_name}) | Serial: {r.deviceSerial}{Color.RESET}")
+                    print(json.dumps(r.to_full_dict(), indent=6))
+                    print()
 
 
 # ==============================================================================
