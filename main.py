@@ -10,6 +10,7 @@ telemetry data to the Spring Boot backend API.
 
 import argparse
 from datetime import datetime, timezone
+import json
 import os
 import sys
 import threading
@@ -281,6 +282,20 @@ def run_single_scenario(config: AppConfig, scenario_name: str, target: Optional[
     print_status_table(generator, batch_result.results, 1, 0.0)
 
 
+def run_preview(config: AppConfig):
+    """Generates and prints sample JSON payloads directly to stdout for inspection."""
+    generator = TelemetryGenerator(config)
+    print_banner()
+    print(f"{Color.BOLD}Telemetry Payload JSON Preview (Sample Ingestion Batch):{Color.RESET}\n")
+
+    readings = generator.generate_all_readings()
+    for idx, r in enumerate(readings, 1):
+        dev = generator.devices[r.deviceSerial]
+        print(f"{Color.CYAN}--- Reading #{idx}: {dev.fence_name} | {dev.section_name} ({r.deviceSerial}) ---{Color.RESET}")
+        print(json.dumps(r.to_full_dict(), indent=2))
+        print()
+
+
 # ==============================================================================
 # Main Entrypoint
 # ==============================================================================
@@ -297,9 +312,14 @@ def main():
     )
     parser.add_argument(
         "--mode",
-        choices=["continuous", "once", "backfill", "scenario"],
+        choices=["continuous", "once", "backfill", "scenario", "preview"],
         default="continuous",
         help="Simulator execution mode (default: continuous)",
+    )
+    parser.add_argument(
+        "--preview",
+        action="store_true",
+        help="Print formatted JSON telemetry payloads without transmitting",
     )
     parser.add_argument(
         "--interval",
@@ -343,7 +363,9 @@ def main():
     interval = args.interval if args.interval is not None else float(config.simulation.interval_seconds)
 
     # Route based on flags
-    if args.backfill:
+    if args.preview or args.mode == "preview":
+        run_preview(config)
+    elif args.backfill:
         run_historical_backfill(config, args.backfill)
     elif args.scenario:
         run_single_scenario(config, args.scenario, args.target)
