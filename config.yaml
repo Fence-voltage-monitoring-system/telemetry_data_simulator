@@ -39,8 +39,11 @@ voltage_profiles:
     max_kv: 1.5
     noise_std: 0.10
 
-# 5 Simulated Regional Gateways across Sri Lanka
+# 5 Regional Gateways across Sri Lanka (5 Sections per Fence = 25 Total Sections)
 gateways:
+  # ----------------------------------------------------------------------------
+  # Gateway 1: Anuradhapura North Hub (Wilpattu)
+  # ----------------------------------------------------------------------------
   - id: "GW-ANURADHAPURA-01"
     name: "Anuradhapura North Hub"
     location: "Wilpattu Border Zone"
@@ -68,7 +71,15 @@ gateways:
             section_name: "Village Boundary Sector"
             nominal_voltage: 6.4
             initial_state: "normal"
+          - serial: "SN-E-01004"
+            section_code: "SEC-05"
+            section_name: "Western Corridor Sector"
+            nominal_voltage: 6.7
+            initial_state: "normal"
 
+  # ----------------------------------------------------------------------------
+  # Gateway 2: Polonnaruwa South Hub (Minneriya)
+  # ----------------------------------------------------------------------------
   - id: "GW-POLONNARUWA-02"
     name: "Polonnaruwa South Hub"
     location: "Minneriya National Park"
@@ -91,7 +102,20 @@ gateways:
             section_name: "Tank Road Crossing Sector"
             nominal_voltage: 6.5
             initial_state: "normal"
+          - serial: "SN-E-02004"
+            section_code: "SEC-04"
+            section_name: "Lake Shoreline Sector"
+            nominal_voltage: 6.8
+            initial_state: "normal"
+          - serial: "SN-E-02005"
+            section_code: "SEC-05"
+            section_name: "Southern Scrubland Sector"
+            nominal_voltage: 6.4
+            initial_state: "normal"
 
+  # ----------------------------------------------------------------------------
+  # Gateway 3: Hambantota Southern Hub (Bundala & Lunugamvehera)
+  # ----------------------------------------------------------------------------
   - id: "GW-HAMBANTOTA-03"
     name: "Hambantota Southern Hub"
     location: "Bundala & Lunugamvehera"
@@ -114,7 +138,20 @@ gateways:
             section_name: "Southern Highway Crossing"
             nominal_voltage: 6.6
             initial_state: "normal"
+          - serial: "SN-E-03004"
+            section_code: "SEC-04"
+            section_name: "Sand Dunes Sector"
+            nominal_voltage: 6.5
+            initial_state: "normal"
+          - serial: "SN-E-03005"
+            section_code: "SEC-05"
+            section_name: "Eastern Wetland Line"
+            nominal_voltage: 6.7
+            initial_state: "normal"
 
+  # ----------------------------------------------------------------------------
+  # Gateway 4: Ampara Eastern Hub (Gal Oya)
+  # ----------------------------------------------------------------------------
   - id: "GW-AMPARA-04"
     name: "Ampara Eastern Hub"
     location: "Gal Oya National Park"
@@ -137,7 +174,20 @@ gateways:
             section_name: "Paddy Field Protection Line"
             nominal_voltage: 6.5
             initial_state: "normal"
+          - serial: "SN-E-04004"
+            section_code: "SEC-04"
+            section_name: "River Delta Sector"
+            nominal_voltage: 6.6
+            initial_state: "normal"
+          - serial: "SN-E-04005"
+            section_code: "SEC-05"
+            section_name: "Hillside Ridge Line"
+            nominal_voltage: 6.3
+            initial_state: "normal"
 
+  # ----------------------------------------------------------------------------
+  # Gateway 5: Trincomalee North-East Hub (Somawathiya)
+  # ----------------------------------------------------------------------------
   - id: "GW-TRINCOMALEE-05"
     name: "Trincomalee North-East Hub"
     location: "Somawathiya Sanctuary"
@@ -159,4 +209,14 @@ gateways:
             section_code: "SEC-03"
             section_name: "Kanthale Road Sector"
             nominal_voltage: 6.4
+            initial_state: "normal"
+          - serial: "SN-E-05004"
+            section_code: "SEC-04"
+            section_name: "Sungawila Marshland Sector"
+            nominal_voltage: 6.6
+            initial_state: "normal"
+          - serial: "SN-E-05005"
+            section_code: "SEC-05"
+            section_name: "Ancient Stupa Buffer Line"
+            nominal_voltage: 6.5
             initial_state: "normal"

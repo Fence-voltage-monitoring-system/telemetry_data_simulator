@@ -70,6 +70,13 @@
               "section_name": "Village Boundary Sector",
               "nominal_voltage": 6.4,
               "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-01004",
+              "section_code": "SEC-05",
+              "section_name": "Western Corridor Sector",
+              "nominal_voltage": 6.7,
+              "initial_state": "normal"
             }
           ]
         }
@@ -103,6 +110,20 @@
               "section_code": "SEC-03",
               "section_name": "Tank Road Crossing Sector",
               "nominal_voltage": 6.5,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-02004",
+              "section_code": "SEC-04",
+              "section_name": "Lake Shoreline Sector",
+              "nominal_voltage": 6.8,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-02005",
+              "section_code": "SEC-05",
+              "section_name": "Southern Scrubland Sector",
+              "nominal_voltage": 6.4,
               "initial_state": "normal"
             }
           ]
@@ -138,6 +159,20 @@
               "section_name": "Southern Highway Crossing",
               "nominal_voltage": 6.6,
               "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-03004",
+              "section_code": "SEC-04",
+              "section_name": "Sand Dunes Sector",
+              "nominal_voltage": 6.5,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-03005",
+              "section_code": "SEC-05",
+              "section_name": "Eastern Wetland Line",
+              "nominal_voltage": 6.7,
+              "initial_state": "normal"
             }
           ]
         }
@@ -172,6 +207,20 @@
               "section_name": "Paddy Field Protection Line",
               "nominal_voltage": 6.5,
               "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-04004",
+              "section_code": "SEC-04",
+              "section_name": "River Delta Sector",
+              "nominal_voltage": 6.6,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-04005",
+              "section_code": "SEC-05",
+              "section_name": "Hillside Ridge Line",
+              "nominal_voltage": 6.3,
+              "initial_state": "normal"
             }
           ]
         }
@@ -205,6 +254,20 @@
               "section_code": "SEC-03",
               "section_name": "Kanthale Road Sector",
               "nominal_voltage": 6.4,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-05004",
+              "section_code": "SEC-04",
+              "section_name": "Sungawila Marshland Sector",
+              "nominal_voltage": 6.6,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-05005",
+              "section_code": "SEC-05",
+              "section_name": "Ancient Stupa Buffer Line",
+              "nominal_voltage": 6.5,
               "initial_state": "normal"
             }
           ]
