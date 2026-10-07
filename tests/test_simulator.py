@@ -32,13 +32,6 @@ class MockSpringBootTelemetryHandler(BaseHTTPRequestHandler):
             data = json.loads(body)
 
             serial = data.get("deviceSerial")
-            if serial not in self.registered_serials:
-                self.send_response(404)
-                self.send_header("Content-Type", "application/json")
-                self.end_headers()
-                self.wfile.write(json.dumps({"error": f"Device not found with serial: {serial}"}).encode("utf-8"))
-                return
-
             MockSpringBootTelemetryHandler.received_readings.append(data)
             self.send_response(201)
             self.send_header("Content-Type", "application/json")
