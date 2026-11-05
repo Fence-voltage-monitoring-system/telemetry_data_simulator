@@ -77,6 +77,41 @@
               "section_name": "Western Corridor Sector",
               "nominal_voltage": 6.7,
               "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-01005",
+              "section_code": "SEC-06",
+              "section_name": "Northern Scrubland Sector",
+              "nominal_voltage": 6.9,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-01006",
+              "section_code": "SEC-07",
+              "section_name": "Villu Crossing Sector",
+              "nominal_voltage": 6.8,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-01007",
+              "section_code": "SEC-08",
+              "section_name": "Buffer Zone Sector",
+              "nominal_voltage": 6.5,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-01008",
+              "section_code": "SEC-09",
+              "section_name": "Ancient Tank Sector",
+              "nominal_voltage": 6.7,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-01009",
+              "section_code": "SEC-10",
+              "section_name": "Park Outpost Sector",
+              "nominal_voltage": 6.6,
+              "initial_state": "normal"
             }
           ]
         }
@@ -124,6 +159,41 @@
               "section_code": "SEC-05",
               "section_name": "Southern Scrubland Sector",
               "nominal_voltage": 6.4,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-02006",
+              "section_code": "SEC-06",
+              "section_name": "Grassland Crossing Sector",
+              "nominal_voltage": 6.9,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-02007",
+              "section_code": "SEC-07",
+              "section_name": "Highway Buffer Sector",
+              "nominal_voltage": 6.6,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-02008",
+              "section_code": "SEC-08",
+              "section_name": "Habarana Junction Sector",
+              "nominal_voltage": 6.7,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-02009",
+              "section_code": "SEC-09",
+              "section_name": "Forest Reserve Sector",
+              "nominal_voltage": 6.5,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-02010",
+              "section_code": "SEC-10",
+              "section_name": "Eco Lodge Border Sector",
+              "nominal_voltage": 6.8,
               "initial_state": "normal"
             }
           ]
@@ -173,6 +243,41 @@
               "section_name": "Eastern Wetland Line",
               "nominal_voltage": 6.7,
               "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-03006",
+              "section_code": "SEC-06",
+              "section_name": "Coastal Dune Sector",
+              "nominal_voltage": 7.0,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-03007",
+              "section_code": "SEC-07",
+              "section_name": "Fisher Village Sector",
+              "nominal_voltage": 6.9,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-03008",
+              "section_code": "SEC-08",
+              "section_name": "Embilikala Lagoon Sector",
+              "nominal_voltage": 6.7,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-03009",
+              "section_code": "SEC-09",
+              "section_name": "Malala Lagoon Sector",
+              "nominal_voltage": 6.6,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-03010",
+              "section_code": "SEC-10",
+              "section_name": "Research Station Sector",
+              "nominal_voltage": 6.8,
+              "initial_state": "normal"
             }
           ]
         }
@@ -221,6 +326,41 @@
               "section_name": "Hillside Ridge Line",
               "nominal_voltage": 6.3,
               "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-04006",
+              "section_code": "SEC-06",
+              "section_name": "Dam Boundary Sector",
+              "nominal_voltage": 6.8,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-04007",
+              "section_code": "SEC-07",
+              "section_name": "Spillway Trail Sector",
+              "nominal_voltage": 6.7,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-04008",
+              "section_code": "SEC-08",
+              "section_name": "Forest Trail Sector",
+              "nominal_voltage": 6.6,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-04009",
+              "section_code": "SEC-09",
+              "section_name": "Wildlife Corridor Sector",
+              "nominal_voltage": 6.5,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-04010",
+              "section_code": "SEC-10",
+              "section_name": "Settlement Perimeter Sector",
+              "nominal_voltage": 6.8,
+              "initial_state": "normal"
             }
           ]
         }
@@ -268,6 +408,41 @@
               "section_code": "SEC-05",
               "section_name": "Ancient Stupa Buffer Line",
               "nominal_voltage": 6.5,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-05006",
+              "section_code": "SEC-06",
+              "section_name": "River Crossing Sector",
+              "nominal_voltage": 6.9,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-05007",
+              "section_code": "SEC-07",
+              "section_name": "Marshland Edge Sector",
+              "nominal_voltage": 6.7,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-05008",
+              "section_code": "SEC-08",
+              "section_name": "North Forest Gate Sector",
+              "nominal_voltage": 6.6,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-05009",
+              "section_code": "SEC-09",
+              "section_name": "Pilgrims Trail Sector",
+              "nominal_voltage": 6.8,
+              "initial_state": "normal"
+            },
+            {
+              "serial": "SN-E-05010",
+              "section_code": "SEC-10",
+              "section_name": "Delta Outpost Sector",
+              "nominal_voltage": 6.7,
               "initial_state": "normal"
             }
           ]
