@@ -36,12 +36,15 @@ class TelemetryReadingPayload:
         """
         Converts the reading to the exact JSON schema expected by Spring Boot TelemetryIngestRequestDTO.
         """
-        return {
+        payload = {
             "deviceSerial": self.deviceSerial,
             "voltage": round(self.voltage, 2),
             "battery": int(self.battery),
             "signal": int(self.signal),
         }
+        if self.timestamp:
+            payload["recordedAt"] = self.timestamp.isoformat()
+        return payload
 
     def to_full_dict(self) -> Dict[str, Any]:
         """
